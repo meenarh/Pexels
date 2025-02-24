@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { getPhotos, searchPhotos } from "@/api/pixora";
+import { getPhotos, searchPhotos } from "@/api/pexels";
 import ImageModal from "@/components/ImageModal.vue";
 
 function delay(ms) {
