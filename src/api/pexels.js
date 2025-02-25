@@ -15,11 +15,17 @@ export const getPhotos = async (count = 9) => {
     const response = await unsplashAPI.get("/search/photos", {
       params: {
         query: "africa", 
-        per_page: count,
+        per_page: count + 3, // Fetch more photos to ensure we have enough to pick from
         order_by: "relevant",
       },
     });
-    return response.data.results; 
+
+    const results = response.data.results;
+    const startIndex = 3; // Start from index 3
+    const selectedPhotos = results.slice(startIndex, startIndex + count);
+
+    console.log(selectedPhotos);
+    return selectedPhotos;
   } catch (error) {
     console.error("Error fetching photos:", error);
     throw error;

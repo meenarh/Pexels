@@ -39,7 +39,7 @@
     </div>
 
     <div class="container">
-      <div v-if="loading" class="skeleton-grid">
+      <div class="skeleton-grid" v-if="loading">
         <div v-for="n in 9" :key="n" class="photo-skeleton">
           <div class="skeleton-image"></div>
           <div class="skeleton-details">
@@ -48,8 +48,9 @@
           </div>
         </div>
       </div>
+      
 
-      <div class="photo-grid" v-else>
+       <div class="photo-grid" v-else>
         <div
           v-for="(photo, index) in photos"
           :key="photo.id"
@@ -62,7 +63,7 @@
             <p>{{ photo.user.location || "Unknown Location" }}</p>
           </div>
         </div>
-      </div>
+      </div> 
     </div>
 
     <ImageModal
@@ -157,30 +158,24 @@ export default {
       this.selectedPhoto = photo;
       this.selectedIndex = index;
       this.isModalVisible = true;
-      console.log("Selected Photo:", this.selectedPhoto, photo);
-      console.log("Index:", this.selectedIndex, index);
     },
     closeModal() {
       this.isModalVisible = false;
       this.selectedPhoto = null;
     },
     prevImage() {
-      // console.log('Selected Index:', this.selectedIndex)
       if (this.selectedIndex > 0) {
         this.selectedIndex--;
         this.selectedPhoto = this.photos[this.selectedIndex];
       }
       this.selectedPhoto = this.photos[this.selectedIndex];
-      // console.log("Selected Photo:", this.selectedPhoto);
     },
     nextImage() {
-      // console.log('Selected Index:', this.selectedIndex)
       if (this.selectedIndex < this.photos.length - 1) {
         this.selectedIndex++;
         this.selectedPhoto = this.photos[this.selectedIndex];
       }
       this.selectedPhoto = this.photos[this.selectedIndex];
-      // console.log("Selected Photo:", this.selectedPhoto);
     },
   },
 };
@@ -283,77 +278,139 @@ export default {
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   margin: 0 60px 0 60px;
-}
-.photo-card {
-  position: relative;
-  width: 100%;
-  height: auto;
 
-  &::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 15%;
-    background: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 0.6) 0%,
-      rgba(0, 0, 0, 0.2) 100%
-    );
-    transition: opacity 0.3s ease;
-    opacity: 0.8;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
+  .photo-card {
+    position: relative;
+    width: 100%;
+    height: auto;
+
+    &:first-child{
+      margin-bottom: 50px;
+    }
+
+    &:nth-child(3){
+      margin-bottom: 30px;
+    }
+
+    &:nth-child(4){
+      margin-top: -45px;
+      margin-bottom: 40px;
+    }
+
+    &:nth-child(6){
+      margin-top: -25px;
+      margin-bottom: 30px;
+    }
+
+    &:nth-child(7){
+      margin-top: -35px;
+      margin-bottom: 40px;
+    }
+
+    &:nth-child(9){
+      margin-top: -30px;
+      margin-bottom: 30px;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 75px;
+      background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.6) 0%,
+        rgba(0, 0, 0, 0.2) 100%
+      );
+      transition: opacity 0.3s ease;
+      opacity: 0.8;
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+    }
+
+    .photo-details {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      color: white;
+      z-index: 2;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+    }
+
+    .photo-details h4 {
+      font-size: 1.2em;
+      font-weight: 500;
+    }
+
+    &:hover img {
+      transform: scale(1.05);
+      transition: transform 0.3s ease;
+    }
   }
 
-  .photo-details {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    color: white;
-    z-index: 2;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  .photo-card img {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
   }
-
-  .photo-details h4 {
-    font-size: 1.2em;
-    font-weight: 500;
-  }
-
-  &:hover img {
-    transform: scale(1.05);
-    transition: transform 0.3s ease;
-  }
-}
-
-.photo-card:nth-child(3n + 2) {
-  margin-top: 40px;
-}
-
-.photo-card img {
-  width: 100%;
-  height: 100%;
-  border-radius: 8px;
 }
 
 .skeleton-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  margin-top: -40px;
   z-index: 1;
+  position: relative;
 
-  .photo-skeleton:nth-child(3n + 2) {
-    margin-top: 40px;
+  .photo-skeleton {
+    background-color: #f0f0f0;
+    height: 500px;
+    padding: 10px;
+    border-radius: 8px;
+    position: relative;
+    z-index: 2;
+
+    
+    &:first-child {
+      height: 450px;
+
+      .skeleton-image {
+        height: 350px;
+      }
   }
-}
 
-.photo-skeleton {
-  background-color: #f0f0f0;
-  padding: 10px;
-  border-radius: 8px;
+  &:nth-child(2){
+    height: 520px;
+  }
 
+  &:nth-child(3){
+    height: 480px;
+  }
+
+  &:nth-child(4){
+      height: 480px;
+      margin-top: -60px;
+    }
+
+    &:nth-child(5){
+      margin-top: 10px;
+    }
+
+    &:nth-child(6){
+      margin-top: -30px;
+    }
+
+    &:nth-child(7){
+      margin-top: -80px;
+    }
+
+    &:nth-child(9){
+      margin-top: -40px;
+    }
+  }
+ 
   .skeleton-image {
     width: 100%;
     height: 400px;
@@ -361,6 +418,19 @@ export default {
     border-radius: 8px;
     margin-bottom: 10px;
     animation: shimmer 1.5s infinite;
+
+
+    &:nth-child(3){
+      height: 420px;
+    }
+
+    &:nth-child(3){
+      height: 380px;
+    }
+
+    &:nth-child(4){
+      height: 380px;
+    }
   }
 
   .skeleton-details {
