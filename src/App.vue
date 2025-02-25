@@ -335,6 +335,7 @@ export default {
       bottom: 10px;
       left: 10px;
       color: white;
+      text-transform: capitalize;
       z-index: 2;
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
     }
