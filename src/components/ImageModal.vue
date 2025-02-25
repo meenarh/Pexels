@@ -1,19 +1,14 @@
 <template>
   <transition name="fade">
     <div class="modal" v-if="visible" @click="closeModal">
+      <button class="arrow left" v-if="hasPrev" @click.stop="prevImage">
+        <svg-icon type="mdi" :path="leftPath" style="height: 32px; width: 32px;"></svg-icon>
+      </button>
       <transition name="zoom">
         <div class="modal-content" @click.stop>
           <span class="close" @click="closeModal">&times;</span>
 
-          <button class="arrow left" @click.stop="prevImage" v-if="hasPrev">
-            &lsaquo;
-          </button>
-
           <img :src="imageSrc" alt="Modal Image" />
-
-          <button class="arrow right" @click.stop="nextImage" v-if="hasNext">
-            &rsaquo;
-          </button>
 
           <div class="photo-details">
             <h3>{{ user }}</h3>
@@ -21,12 +16,30 @@
           </div>
         </div>
       </transition>
+      <button class="arrow right" v-if="hasNext" @click.stop="nextImage">
+        <svg-icon type="mdi" :path="rightPath" style="height: 32px; width: 32px;"></svg-icon>
+      </button>
     </div>
   </transition>
 </template>
 
 <script>
+import SvgIcon from "@jamescoyle/vue-icon";
+import { mdiChevronRight, mdiChevronLeft } from "@mdi/js";
+
 export default {
+  name: "ImageModal",
+  components: {
+    SvgIcon,
+  },
+  data() {
+    return {
+      leftPath: mdiChevronLeft,
+      rightPath: mdiChevronRight,
+      selectedIndex: 0,
+      selectedPhoto: this.imageSrc,
+    };
+  },
   props: {
     imageSrc: {
       type: String,
@@ -53,19 +66,18 @@ export default {
       default: false,
     },
   },
+  emits: ["close", "prev", "next"],
   methods: {
     closeModal() {
       this.$emit("close");
-    },
-    prevImage() {
-      console.log("Prev Clicked, Index:", this.selectedIndex);
-      this.$emit("prev");
+  },
+  prevImage() {
+    this.$emit("prev");
     },
     nextImage() {
-      console.log("Next Clicked, Index:", this.selectedIndex);
       this.$emit("next");
     },
-  },
+  }
 };
 </script>
 
@@ -121,28 +133,26 @@ export default {
 .arrow {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
-  color: #000;
-  border: none;
-  padding: 12px 18px;
-  font-size: 24px;
   cursor: pointer;
   z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  background-color: white;
 }
 
 .arrow.left {
-  left: 50px;
-  background-color: white;
+  left: 60px;
+  border-radius: 50%;
+  font-size: 32px;
 }
 
 .arrow.right {
-  right: 50px;
-  background-color: white;
-}
-
-.arrow:hover {
-  background: rgba(0, 0, 0, 0.9);
-  color: white;
+  right: 60px;
+  border-radius: 50%;
+  font-size: 32px;
 }
 
 .photo-details {

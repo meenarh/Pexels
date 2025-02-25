@@ -51,10 +51,10 @@
 
       <div class="photo-grid" v-else>
         <div
-          v-for="photo in photos"
+          v-for="(photo, index) in photos"
           :key="photo.id"
           class="photo-card"
-          @click="openModal(photo)"
+          @click="openModal(photo, index)"
         >
           <img :src="photo.urls.small" :alt="photo.alt_description" />
           <div class="photo-details">
@@ -95,8 +95,8 @@ export default {
     return {
       photos: [],
       searchQuery: "",
-      lastSearchQuery: "",
       selectedPhoto: null,
+      lastSearchQuery: "",
       selectedIndex: 0,
       isModalVisible: false,
       loading: true,
@@ -157,22 +157,30 @@ export default {
       this.selectedPhoto = photo;
       this.selectedIndex = index;
       this.isModalVisible = true;
+      console.log("Selected Photo:", this.selectedPhoto, photo);
+      console.log("Index:", this.selectedIndex, index);
     },
     closeModal() {
       this.isModalVisible = false;
       this.selectedPhoto = null;
     },
     prevImage() {
+      // console.log('Selected Index:', this.selectedIndex)
       if (this.selectedIndex > 0) {
         this.selectedIndex--;
         this.selectedPhoto = this.photos[this.selectedIndex];
       }
+      this.selectedPhoto = this.photos[this.selectedIndex];
+      // console.log("Selected Photo:", this.selectedPhoto);
     },
     nextImage() {
+      // console.log('Selected Index:', this.selectedIndex)
       if (this.selectedIndex < this.photos.length - 1) {
         this.selectedIndex++;
         this.selectedPhoto = this.photos[this.selectedIndex];
       }
+      this.selectedPhoto = this.photos[this.selectedIndex];
+      // console.log("Selected Photo:", this.selectedPhoto);
     },
   },
 };
